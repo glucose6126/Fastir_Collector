@@ -365,11 +365,9 @@ class _FS(object):
     	with open(self.output_dir + '\\' + self.computer_name + '_wifi' + self.rand_ext, 'wb') as output:
     		csv_writer = get_csv_writer(output)
     		write_to_csv(("SSID", "AUTH", "ENC", "PASSWORD"), csv_writer)
-    		
-    		output_dir = "c:\\#TEST"
     
     		try :
-    			os.mkdir(output_dir + "\\TMP")
+    			os.mkdir(self.output_dir + "\\TMP")
     		except :
     			pass
     		os.system("netsh wlan export profile key=clear folder=" + output_dir + "\\TMP")
@@ -379,7 +377,7 @@ class _FS(object):
     		re_enc  = "<encryption>(.+?)</encryption>"
     		re_pw   = "<keyMaterial>(.+?)</keyMaterial>"
     
-    		for filename in os.listdir(output_dir + '\\TMP') :
+    		for filename in os.listdir(self.output_dir + '\\TMP') :
     			file = open(filename, 'rb').read()
     			name = re.find(file, re_name)
     			auth = re.find(file, re_auth)
