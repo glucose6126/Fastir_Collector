@@ -8,6 +8,7 @@ import sqlite3
 import traceback
 import ctypes
 import struct
+import re
 
 from utils.utils import look_for_outlook_dirs, look_for_files, zip_archive, get_csv_writer, get_json_writer, \
     write_to_csv, \
