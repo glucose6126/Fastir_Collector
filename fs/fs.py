@@ -360,3 +360,33 @@ class _FS(object):
                 zip_archive(outlook_pst_files, self.output_dir, 'pst', self.logger)
             if len(outlook_ost_files) > 0:
                 zip_archive(outlook_ost_files, self.output_dir, 'ost', self.logger)
+            
+    def get_wifi_password(self) :
+    	with open(self.output_dir + '\\' + self.computer_name + '_wifi' + self.rand_ext, 'wb') as output:
+    		csv_writer = get_csv_writer(output)
+    		write_to_csv(("SSID", "AUTH", "ENC", "PASSWORD"), csv_writer)
+    		
+    		output_dir = "c:\\#TEST"
+    
+    		try :
+    			os.mkdir(output_dir + "\\TMP")
+    		except :
+    			pass
+    		os.system("netsh wlan export profile key=clear folder=" + output_dir + "\\TMP")
+    
+    		re_name = "<name>(.+?)</name>"
+    		re_auth = "<authentication>(.+?)</authentication>"
+    		re_enc  = "<encryption>(.+?)</encryption>"
+    		re_pw   = "<keyMaterial>(.+?)</keyMaterial>"
+    
+    		for filename in os.listdir(output_dir + '\\TMP') :
+    			file = open(filename, 'rb').read()
+    			name = re.find(file, re_name)
+    			auth = re.find(file, re_auth)
+    			if auth != 'open' :
+    				enc  = re.find(file, re_enc)
+    				pw   = re.find(file, re_pw)
+    			else :
+    				enc  = 'none'
+    				pw   = 'none'
+    			write_to_csv([name, auth, enc, pw], csv_writer)
